@@ -1,20 +1,20 @@
 /* =============================================================
-   seed_data_test.sql ó InserÁ„o de Dados de Teste (Manual)
+   seed_data_test.sql ‚Äî Inser√ß√£o de Dados de Teste (Manual)
    ============================================================= */
 USE AluguerHab;
 GO
 
-PRINT 'A iniciar inserÁ„o de dados de teste...';
+PRINT 'A iniciar inser√ß√£o de dados de teste...';
 
--- 1. INSERIR PAP…IS (Roles)
+-- 1. INSERIR PAP√âIS (Roles)
 INSERT INTO core.Papel (Nome) VALUES ('ADMIN'), ('ANFITRIAO'), ('CLIENTE');
 
 -- 2. INSERIR UTILIZADORES
 -- Senha simulada (hash dummy)
 DECLARE @Hash VARBINARY(256) = HASHBYTES('SHA2_256', 'Mypassword123!');
 
--- Anfitri„o: Jo„o
-INSERT INTO core.Utilizador (Email, HashSenha, Nome) VALUES ('joao.host@email.com', @Hash, 'Jo„o Anfitri„o');
+-- Anfitri√£o: Jo√£o
+INSERT INTO core.Utilizador (Email, HashSenha, Nome) VALUES ('joao.host@email.com', @Hash, 'Jo√£o Anfitri√£o');
 DECLARE @IdJoao INT = SCOPE_IDENTITY();
 
 -- Cliente 1: Maria
@@ -25,43 +25,43 @@ DECLARE @IdMaria INT = SCOPE_IDENTITY();
 INSERT INTO core.Utilizador (Email, HashSenha, Nome) VALUES ('pedro.turista@email.com', @Hash, 'Pedro Turista');
 DECLARE @IdPedro INT = SCOPE_IDENTITY();
 
--- 3. ASSOCIAR PAP…IS E DETALHES
--- Jo„o È Anfitri„o
+-- 3. ASSOCIAR PAP√âIS E DETALHES
+-- Jo√£o √© Anfitri√£o
 INSERT INTO core.UtilizadorPapel (UtilizadorId, PapelId) 
 SELECT @IdJoao, PapelId FROM core.Papel WHERE Nome = 'ANFITRIAO';
 
 INSERT INTO core.Anfitriao (UtilizadorId, IBAN) VALUES (@IdJoao, 'PT50000011112222333344445');
 DECLARE @AnfitriaoId INT = SCOPE_IDENTITY();
 
--- Maria È Cliente
+-- Maria √© Cliente
 INSERT INTO core.UtilizadorPapel (UtilizadorId, PapelId) 
 SELECT @IdMaria, PapelId FROM core.Papel WHERE Nome = 'CLIENTE';
 
 INSERT INTO core.Cliente (UtilizadorId, DataNascimento, Pais) VALUES (@IdMaria, '1990-05-20', 'Portugal');
 DECLARE @ClienteMariaId INT = SCOPE_IDENTITY();
 
--- Pedro È Cliente
+-- Pedro √© Cliente
 INSERT INTO core.UtilizadorPapel (UtilizadorId, PapelId) 
 SELECT @IdPedro, PapelId FROM core.Papel WHERE Nome = 'CLIENTE';
 
 INSERT INTO core.Cliente (UtilizadorId, DataNascimento, Pais) VALUES (@IdPedro, '1985-11-15', 'Espanha');
 
--- 4. CRIAR LOCALIZA«√O E PROPRIEDADE
+-- 4. CRIAR LOCALIZA√á√ÉO E PROPRIEDADE
 INSERT INTO core.Localizacao (Pais, Cidade, Morada, Latitude, Longitude)
 VALUES ('Portugal', 'Lisboa', 'Rua Garrett, Chiado', 38.710, -9.142);
 DECLARE @LocId INT = SCOPE_IDENTITY();
 
 INSERT INTO core.Propriedade (AnfitriaoId, LocalizacaoId, Titulo, Descricao, Capacidade, RatingMedio)
-VALUES (@AnfitriaoId, @LocId, 'Apartamento T2 Chiado', 'Vista incrÌvel sobre a cidade', 4, 0);
+VALUES (@AnfitriaoId, @LocId, 'Apartamento T2 Chiado', 'Vista incr√≠vel sobre a cidade', 4, 0);
 DECLARE @PropId INT = SCOPE_IDENTITY();
 
--- 5. DEFINIR PRE«OS E …POCAS
+-- 5. DEFINIR PRE√áOS E √âPOCAS
 INSERT INTO core.Epoca (Nome, DataInicio, DataFim) VALUES ('Ano 2025', '2025-01-01', '2025-12-31');
 DECLARE @EpocaId INT = SCOPE_IDENTITY();
 
 INSERT INTO core.PrecoEpoca (PropriedadeId, EpocaId, PrecoNoite) VALUES (@PropId, @EpocaId, 120.00);
 
--- 6. CRIAR CALEND¡RIO (365 dias para a propriedade)
+-- 6. CRIAR CALEND√ÅRIO (365 dias para a propriedade)
 -- Truque simples para gerar dias sequenciais em SQL
 DECLARE @DataInicial DATE = '2025-01-01';
 DECLARE @i INT = 0;
@@ -73,7 +73,7 @@ BEGIN
     SET @i = @i + 1;
 END
 
--- 7. CRIAR UMA RESERVA CONFIRMADA (OCUPA«√O)
+-- 7. CRIAR UMA RESERVA CONFIRMADA (OCUPA√á√ÉO)
 -- A Maria reservou de 5 a 10 de Janeiro de 2025
 INSERT INTO core.Reserva (PropriedadeId, ClienteId, DataCheckIn, DataCheckOut, Estado, Total)
 VALUES (@PropId, @ClienteMariaId, '2025-01-05', '2025-01-10', 'CONFIRMADA', 600.00);
