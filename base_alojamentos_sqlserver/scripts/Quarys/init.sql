@@ -1,17 +1,17 @@
 /* ===============================
-   init.sql ó criaÁ„o da BD com simulaÁ„o de discos em pastas locais
+   init.sql ‚Äî cria√ß√£o da BD com simula√ß√£o de discos em pastas locais
    =============================== */
 USE master;
 GO
 
--- 1. DEFINI«√O DE CAMINHOS (SimulaÁ„o dos discos)
+-- 1. DEFINI√á√ÉO DE CAMINHOS (Simula√ß√£o dos discos)
 -- Nota: Certifique-se que as pastas abaixo EXISTEM no disco C: antes de correr!
 DECLARE @DATA NVARCHAR(260)   = N'C:\SQL_Projeto\Data';      -- Simula Disco de Dados
-DECLARE @INDEX NVARCHAR(260)  = N'C:\SQL_Projeto\Index';     -- Simula Disco de Õndices
+DECLARE @INDEX NVARCHAR(260)  = N'C:\SQL_Projeto\Index';     -- Simula Disco de √çndices
 DECLARE @LOG NVARCHAR(260)    = N'C:\SQL_Projeto\Log';       -- Simula Disco de Log
 DECLARE @BACKUP NVARCHAR(260) = N'C:\SQL_Projeto\Backups';   -- Simula Disco de Backups
 
--- Verifica se a BD j· existe e apaga-a para recomeÁar do zero
+-- Verifica se a BD j√° existe e apaga-a para recome√ßar do zero
 IF DB_ID(N'AluguerHab') IS NOT NULL
 BEGIN
     ALTER DATABASE AluguerHab SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -19,9 +19,9 @@ BEGIN
 END
 GO
 
--- 2. CRIA«√O DA BASE DE DADOS E FILEGROUPS
--- Como estamos dentro de um bloco din‚mico, precisamos de redeclarar as vari·veis ou concatenar direto.
--- Para simplificar, vou reinserir os caminhos aqui na string din‚mica.
+-- 2. CRIA√á√ÉO DA BASE DE DADOS E FILEGROUPS
+-- Como estamos dentro de um bloco din√¢mico, precisamos de redeclarar as vari√°veis ou concatenar direto.
+-- Para simplificar, vou reinserir os caminhos aqui na string din√¢mica.
 
 DECLARE @PATH_DATA NVARCHAR(260)  = N'C:\SQL_Projeto\Data';
 DECLARE @PATH_INDEX NVARCHAR(260) = N'C:\SQL_Projeto\Index';
@@ -57,26 +57,26 @@ LOG ON
 EXEC(@sql);
 GO
 
--- 3. DEFINIR O FILEGROUP PADR√O
+-- 3. DEFINIR O FILEGROUP PADR√ÉO
 ALTER DATABASE AluguerHab MODIFY FILEGROUP FG_DATA DEFAULT;
 GO
 
 USE AluguerHab;
 GO
 
--- 4. CONFIGURA«’ES DE PERFORMANCE E COMPATIBILIDADE
+-- 4. CONFIGURA√á√ïES DE PERFORMANCE E COMPATIBILIDADE
 ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = ON;
 ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
 GO
 
--- 5. CRIA«√O DO SCHEMA OBRIGAT”RIO (para corrigir o erro que teve antes)
+-- 5. CRIA√á√ÉO DO SCHEMA OBRIGAT√ìRIO (para corrigir o erro que teve antes)
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'core')
 BEGIN
     EXEC('CREATE SCHEMA core');
 END
 GO
 
--- 6. ATIVAR QUERY STORE (Para an·lise de performance)
+-- 6. ATIVAR QUERY STORE (Para an√°lise de performance)
 ALTER DATABASE AluguerHab SET QUERY_STORE = ON;
 ALTER DATABASE AluguerHab SET QUERY_STORE (OPERATION_MODE = READ_WRITE);
 GO
