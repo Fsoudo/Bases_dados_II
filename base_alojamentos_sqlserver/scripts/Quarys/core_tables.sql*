@@ -1,11 +1,11 @@
 
 /* ===============================
-   core_tables.sql ó tabelas principais e constraints
+   core_tables.sql ‚Äî tabelas principais e constraints
    =============================== */
 USE AluguerHab;
 GO
 
--- TABELAS DE UTILIZADORES/PAP…IS
+-- TABELAS DE UTILIZADORES/PAP√âIS
 CREATE TABLE core.Utilizador (
     UtilizadorId INT IDENTITY(1,1) CONSTRAINT PK_Utilizador PRIMARY KEY,
     Email NVARCHAR(256) NOT NULL UNIQUE,
@@ -28,7 +28,7 @@ CREATE TABLE core.UtilizadorPapel (
     CONSTRAINT FK_UtilizadorPapel_Papel FOREIGN KEY (PapelId) REFERENCES core.Papel(PapelId)
 ) ON FG_DATA;
 
--- ENTIDADES DE NEG”CIO
+-- ENTIDADES DE NEG√ìCIO
 CREATE TABLE core.Anfitriao (
     AnfitriaoId INT IDENTITY(1,1) CONSTRAINT PK_Anfitriao PRIMARY KEY,
     UtilizadorId INT NOT NULL UNIQUE,
@@ -153,7 +153,7 @@ CREATE TABLE core.Avaliacao (
     CONSTRAINT FK_Aval_R FOREIGN KEY (ReservaId) REFERENCES core.Reserva(ReservaId)
 ) ON FG_DATA;
 
--- ÕNDICES ESSENCIAIS
+-- √çNDICES ESSENCIAIS
 CREATE INDEX IX_Reserva_P_Data ON core.Reserva (PropriedadeId, DataCheckIn, DataCheckOut) ON FG_INDEX;
 CREATE INDEX IX_Calendario_P_Dia ON core.CalendarioDisponibilidade (PropriedadeId, Dia) ON FG_INDEX;
 CREATE INDEX IX_Propriedade_Local ON core.Propriedade (LocalizacaoId, Capacidade) ON FG_INDEX;
