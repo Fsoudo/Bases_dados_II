@@ -1,5 +1,5 @@
 /* ================================================
-   sp_check_disponibilidade.sql ó Verifica janela
+   sp_check_disponibilidade.sql ‚Äî Verifica janela
    ================================================ */
 USE AluguerHab;
 GO
@@ -18,7 +18,7 @@ BEGIN
 
     IF @CheckIn >= @CheckOut
     BEGIN
-        RAISERROR('Intervalo inv·lido.', 16, 1);
+        RAISERROR('Intervalo inv√°lido.', 16, 1);
         RETURN;
     END
 
@@ -37,7 +37,7 @@ BEGIN
         SET @ExisteChoque = 1;
     END
 
-    -- 2) Calend·rio indica dias ocupados na janela?
+    -- 2) Calend√°rio indica dias ocupados na janela?
     IF EXISTS (
         SELECT 1
         FROM core.CalendarioDisponibilidade c
