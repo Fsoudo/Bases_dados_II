@@ -1,0 +1,5 @@
+listings.csv - https://insideairbnb.com/get-the-data/
+
+forenames.csv e surnames.csv - https://www.kaggle.com/datasets/erpel1/forenames-and-surnames-with-gender-and-country
+
+worldcities.csv - https://simplemaps.com/data/world-cities
